@@ -36,7 +36,38 @@ function visChange() {
 	var txtFld = document.getElementById("visChangeText");
 
 	if (txtFld) {
-        if (isHidden()) 
-            penaltyFunc();
+		if (isHidden()) penaltyFunc();
 	}
 }
+
+/*************************************************
+ * Title: 3 Ways to Disable Copy Text in Javascript & CSS
+ * Author:  W.S. Toh
+ * Date: December 19, 2020
+ * Availability: https://code-boxx.com/disable-copy-text-javascript-css/
+ *************************************************/
+
+// PREVENT CONTEXT MENU FROM OPENING
+document.addEventListener(
+	"contextmenu",
+	function (evt) {
+		evt.preventDefault();
+	},
+	false
+);
+
+// PREVENT CLIPBOARD COPYING
+document.addEventListener(
+	"copy",
+	function (evt) {
+		// Change the copied text if you want
+		evt.clipboardData.setData(
+			"text/plain",
+			"Copying is not allowed on this webpage"
+		);
+
+		// Prevent the default copy action
+		evt.preventDefault();
+	},
+	false
+);

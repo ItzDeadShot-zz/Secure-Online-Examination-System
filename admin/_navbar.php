@@ -1,21 +1,50 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">SEOE</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Exam List</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<div class="l-navbar" id="nav-bar">
+	<nav class="nav">
+		<div>
+			<a href="#" class="nav__link" aria-current="page">
+				<i class="bx bx-book-reader nav__icon"></i>
+				<span class="nav__logo-name">SEOE</span>
+			</a>
+
+			<div class="nav__list">
+				<a href="#" class="nav__link active">
+				<i class='bx bx-grid-alt nav__icon' ></i>
+					<span class="nav__name">Dashboard</span>
+				</a>
+
+				<a href="#" class="nav__link">
+					<i class='bx bx-user nav__icon' ></i>
+					<span class="nav__name">Users</span>
+				</a>
+				
+				<a href="#" class="nav__link">
+					<i class='bx bx-message-square-detail nav__icon' ></i>
+					<span class="nav__name">Messages</span>
+				</a>
+
+				<a href="#" class="nav__link">
+					<i class='bx bx-bookmark nav__icon' ></i>
+					<span class="nav__name">Favorites</span>
+				</a>
+
+				<a href="#" class="nav__link">
+					<i class='bx bx-folder nav__icon' ></i>
+					<span class="nav__name">Data</span>
+				</a>
+
+				<a href="#" class="nav__link">
+					<i class='bx bx-bar-chart-alt-2 nav__icon' ></i>
+					<span class="nav__name">Analytics</span>
+				</a>
+			</div>
+		</div>
+
+		<a href="#" class="nav__link">
+			<i class='bx bx-log-out nav__icon' ></i>
+			<span class="nav__name">Log Out</span>
+		</a>
+	</nav>
+</div>
+
+<!--===== MAIN JS =====-->
+    <script src="../assets/js/main.js"></script>

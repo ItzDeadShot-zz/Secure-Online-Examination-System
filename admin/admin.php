@@ -1,59 +1,102 @@
 <?php
-    include "../dbConnect.php";
-    include "_header.php";
-    include "_navbar.php";
+include "_header.php";
+include "_navbar.php";
+include 'exam.php';
+
+$examObj = new Exam();
 ?>
 
+<br><br>
+
 <div class="container">
-    Welcome to the fucking website admin.
-    <div class="content read">
-	<h2>Read Contacts</h2>
-	<a href="create.php" class="create-contact">Create Contact</a>
-  <table class="table">
+    <?php
+    if (isset($_GET['msg1']) == "insert") {
+        echo "<div class='alert alert-success alert-dismissible'>
+              <button type='button' class='close' data-dismiss='alert'>&times;</button>
+              Exam Added Successfully!
+            </div>";
+    }
+    if (isset($_GET['msg2']) == "update") {
+        echo "<div class='alert alert-success alert-dismissible'>
+              <button type='button' class='close' data-dismiss='alert'>&times;</button>
+              Exam Updated Successfully!
+            </div>";
+    }
+    if (isset($_GET['msg3']) == "delete") {
+        echo "<div class='alert alert-success alert-dismissible'>
+              <button type='button' class='close' data-dismiss='alert'>&times;</button>
+              Exam Deleted Successfully!
+            </div>";
+    }
+    ?>
+
+    <h2>View Records
+        <a href="add.php" class="btn btn-primary" style="float:right;">Add New Record</a>
+    </h2>
+
+    <div class="input-group"> <span class="input-group-addon">Filter</span>
+        <input id="filter" type="text" class="form-control" placeholder="Type here...">
+    </div>
+
+    <table class="table table-hover">
         <thead>
             <tr>
-                <td>#</td>
-                <td>Course</td>
-                <td>Course Name</td>
-                <td>Session</td>
-                <td>Exam Date</td>
-                <td></td>
+                <th>Course</th>
+                <th>Semester</th>
+                <th>Date</th>
+                <th>Time Limit</th>
+                <th>Action</th>
             </tr>
         </thead>
-        <tbody>
-            <?php
-            $stmt = $con->prepare('SELECT * from exams');
-            $stmt->execute();
-            $results = $stmt->get_result();
-            while ($row = $result->fetch_array(MYSQLI_ASSOC)) { ?>
-              <tr>
-                <td><?=$row['exam_id']?></td>
-                <td><?=$row['course_code']?></td>
-                <td><?=$row['course_name']?></td>
-                <td><?=$row['semester_year']?></td>
-                <td><?=$row['exam_date']?></td>
-                <td class="actions">
-                    <a href="update.php?id=<?=$row['id']?>" class="edit"><i class="fas fa-pen fa-xs"></i></a>
-                    <a href="delete.php?id=<?=$row['id']?>" class="trash"><i class="fas fa-trash fa-xs"></i></a>
-                </td>
+        <tbody class="searchable">
+            <tr class="no-data" style="display: none;text-align: center;">
+                <td colspan="4">No data</td>
             </tr>
             <?php
-              }
+            $exams = $examObj->displayData();
+            if ($exams != null)
+                foreach ($exams as $exam) {
             ?>
+                <tr>
+                    <td><?php echo $exam['course_name'] ?></td>
+                    <td><?php echo $exam['semester_year'] ?></td>
+                    <td><?php echo $exam['exam_date'] ?></td>
+                    <td><?php echo $exam['exam_limit'] ?></td>
+                    <td>
+                        <a href="edit.php?editId=<?php echo $exam['exam_id'] ?>" style="color:green">
+                            <i class="fa fa-pencil" aria-hidden="true"></i></a>&nbsp
+                        <a href="index.php?deleteId=<?php echo $exam['exam_id'] ?>" style="color:red" onclick="confirm('Are you sure you want to delete this exam?')">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
-	<div class="pagination">
-		<?php if ($page > 1): ?>
-		<a href="read.php?page=<?=$page-1?>"><i class="fas fa-angle-double-left fa-sm"></i></a>
-		<?php endif; ?>
-		<?php if ($page*$records_per_page < $num_contacts): ?>
-		<a href="read.php?page=<?=$page+1?>"><i class="fas fa-angle-double-right fa-sm"></i></a>
-		<?php endif; ?>
-	</div>
 </div>
-</div>
+
 <!-- JavaScripts -->
+<script>
+    $(document).ready(function() {
+        (function($) {
+            $('#filter').keyup(function() {
+                var rex = new RegExp($(this).val(), 'i');
+                $('.searchable tr').hide();
+                $('.searchable tr').filter(function() {
+                    return rex.test($(this).text());
+                }).show();
+                $('.no-data').hide();
+                if ($('.searchable tr:visible').length == 0) {
+                    $('.no-data').show();
+                }
+
+            })
+
+        }(jQuery));
+
+    });
+</script>
 
 <?php
-  include("_footer.php");
+include("_footer.php");
 ?>

@@ -37,7 +37,6 @@ function visChange() {
 
 	if (txtFld) {
 		if (isHidden()) penaltyFunc();
-	}
 }
 
 /*************************************************

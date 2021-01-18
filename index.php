@@ -41,8 +41,5 @@ include("_navbar.php");
 	<div class="col-md-4"></div>
 </div>
 <?php
-include("popup.php");
-?>
-<?php
 include("_footer.php");
 ?>

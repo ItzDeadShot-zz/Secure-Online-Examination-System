@@ -6,7 +6,7 @@ include("_navbar.php");
 ?>
 
 <div class="container">
-  Welcome to the fucking website.
+  Welcome to the website.
 </div>
 
 <!-- JavaScripts -->

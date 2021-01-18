@@ -20,7 +20,7 @@ class Exam
 		}
 	}
 
-	// Insert customer data into customer table
+	// Insert exam data into exam table
 	public function insertData($post)
 	{
 		$course_name = $this->con->real_escape_string($_POST['course_name']);
@@ -28,7 +28,8 @@ class Exam
 		$exam_date = $this->con->real_escape_string($_POST['exam_date']);
 		$exam_limit = $this->con->real_escape_string($_POST['exam_limit']);
 		echo $exam_date;
-		$query = "INSERT INTO exams(course_name,semester_year,exam_date, exam_limit) VALUES('$course_name','$semester_year','$exam_date', '$exam_limit')";
+		$query = "INSERT INTO exams(course_name,semester_year,exam_date, exam_limit) 
+					VALUES('$course_name','$semester_year','$exam_date', '$exam_limit')";
 		echo $query;
 		$sql = $this->con->query($query);
 		if ($sql == true) {
@@ -38,7 +39,7 @@ class Exam
 		}
 	}
 
-	// Fetch customer records for show listing
+	// Fetch exam records for show listing
 	public function displayData()
 	{
 		$query = "SELECT * FROM exams";
@@ -54,7 +55,7 @@ class Exam
 		}
 	}
 
-	// Fetch single data for edit from customer table
+	// Fetch single data for edit from exam table
 	public function displyaRecordById($id)
 	{
 		$query = "SELECT * FROM exams WHERE exam_id = '$id'";
@@ -67,7 +68,7 @@ class Exam
 		}
 	}
 
-	// Update customer data into customer table
+	// Update exam data into exam table
 	public function updateRecord($postData)
 	{
 		$course_name = $this->con->real_escape_string($_POST['course_name']);
@@ -76,7 +77,8 @@ class Exam
 		$exam_limit = $this->con->real_escape_string($_POST['exam_limit']);
 		$id = $this->con->real_escape_string($_POST['id']);
 		if (!empty($id) && !empty($postData)) {
-			$query = "UPDATE exams SET course_name = '$course_name', semester_year = '$semester_year', exam_date = '$exam_date', exam_limit = '$exam_limit' WHERE exam_id = '$id'";
+			$query = "UPDATE exams SET course_name = '$course_name', semester_year = '$semester_year', 
+						exam_date = '$exam_date', exam_limit = '$exam_limit' WHERE exam_id = '$id'";
 			$sql = $this->con->query($query);
 			if ($sql == true) {
 				header("Location:admin.php?msg2=update");
@@ -87,7 +89,7 @@ class Exam
 	}
 
 
-	// Delete customer data from customer table
+	// Delete exam data from exam table
 	public function deleteRecord($id)
 	{
 		$query = "DELETE FROM exams WHERE exam_id = '$id'";

@@ -98,7 +98,6 @@ $examObj = new Exam();
 
     });
 </script>
-
 <?php
 include("_footer.php");
 ?>

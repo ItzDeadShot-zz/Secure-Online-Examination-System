@@ -12,6 +12,11 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 	<link rel="stylesheet" href="assets/css/styles.css">
 	<link rel="stylesheet" href="assets/css/adminlte.min.css">
+    
+    <!-- ===== JS ===== -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/jquery-3.5.1.min.js"></script>
     <title><?php echo $title; ?></title>
 </head>
 <body id="body-pd">

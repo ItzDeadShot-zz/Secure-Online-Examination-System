@@ -1,4 +1,3 @@
-var modal = document.getElementById("myModal");
 var intervalFunc;
 
 //Fullscreen Mode
@@ -16,7 +15,9 @@ function openFullscreen() {
 }
 
 function penaltyFunc() {
-	modal.style.display = "block";
+	var popup_restriction_modal = document.getElementById("popupRestriction");
+	var countdown_to_dismiss = document.getElementById("countdown_warning");
+	popup_restriction_modal.style.display = "block";
 	var distance = 1000 * 60 * 10;
 	clearInterval(intervalFunc);
 	// Update the count down every 1 second
@@ -26,57 +27,134 @@ function penaltyFunc() {
 		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 		// Output the result in an element with id="demo"
-		document.getElementById("countdown").innerHTML =
-			minutes + "m " + seconds + "s ";
+		countdown_to_dismiss.innerHTML = minutes + "m " + seconds + "s ";
 
 		// If the count down is over, write some text
 		if (distance < 0) {
 			clearInterval(x);
-			document.getElementById("countdown").innerHTML = "EXPIRED";
-			modal.style.display = "none";
+			countdown_to_dismiss.innerHTML = "EXPIRED";
+			popup_restriction_modal.style.display = "none";
 		}
 		distance = distance - 1000;
 	}, 1000);
 }
 
 /*************************************************
- * Title: Using the PageVisibility API
- * Author: Joe Marini
- * Date: October 25th, 2012
- * Availability: https://www.html5rocks.com/en/tutorials/pagevisibility/intro/
+ * Title: visibilitychange event is not triggered when switching program/window with ALT+TAB or clicking in taskbar
+ * Author: TylerH
+ * Date:  Sep 16 '20 at 23:16
+ * Availability: https://stackoverflow.com/questions/28993157/visibilitychange-event-is-not-triggered-when-switching-program-window-with-altt
  *************************************************/
-// Get the modal
-function getHiddenProp() {
-	var prefixes = ["webkit", "moz", "ms", "o"];
+var return_from_hidden = false;
 
-	// if 'hidden' is natively supported just return it
-	if ("hidden" in document) return "hidden";
+var browserPrefixes = ["moz", "ms", "o", "webkit"],
+	isVisible = true; // internal flag, defaults to true
 
-	// otherwise loop over all the known prefixes until we find one
-	for (var i = 0; i < prefixes.length; i++) {
-		if (prefixes[i] + "Hidden" in document) return prefixes[i] + "Hidden";
+// get the correct attribute name
+function getHiddenPropertyName(prefix) {
+	return prefix ? prefix + "Hidden" : "hidden";
+}
+
+// get the correct event name
+function getVisibilityEvent(prefix) {
+	return (prefix ? prefix : "") + "visibilitychange";
+}
+
+// get current browser vendor prefix
+function getBrowserPrefix() {
+	for (var i = 0; i < browserPrefixes.length; i++) {
+		if (getHiddenPropertyName(browserPrefixes[i]) in document) {
+			// return vendor prefix
+			return browserPrefixes[i];
+		}
 	}
 
-	// otherwise it's not supported
+	// no vendor prefix needed
 	return null;
 }
-function isHidden() {
-	var prop = getHiddenProp();
-	if (!prop) return false;
 
-	return document[prop];
+// bind and handle events
+var browserPrefix = getBrowserPrefix(),
+	hiddenPropertyName = getHiddenPropertyName(browserPrefix),
+	visibilityEventName = getVisibilityEvent(browserPrefix);
+
+function onVisible() {
+	// prevent double execution
+	if (isVisible) {
+		return;
+	}
+	if (return_from_hidden) {
+		penaltyFunc();
+		return_from_hidden = false;
+	}
+	// change flag value
+	isVisible = true;
+	//console.log("visible");
+}
+function onHidden() {
+	// prevent double execution
+	if (!isVisible) {
+		return;
+	}
+
+	return_from_hidden = true;
+	// change flag value
+	isVisible = false;
+	//console.log("hidden");
 }
 
-var visProp = getHiddenProp();
-if (visProp) {
-	var evtname = visProp.replace(/[H|h]idden/, "") + "visibilitychange";
-	document.addEventListener(evtname, visChange);
+function handleVisibilityChange(forcedFlag) {
+	// forcedFlag is a boolean when this event handler is triggered by a
+	// focus or blur eventotherwise it's an Event object
+	if (typeof forcedFlag === "boolean") {
+		if (forcedFlag) {
+			return onVisible();
+		}
+
+		return onHidden();
+	}
+
+	if (document[hiddenPropertyName]) {
+		return onHidden();
+	}
+
+	return onVisible();
 }
 
-function visChange() {
-	if (isHidden()) penaltyFunc();
-}
+document.addEventListener(visibilityEventName, handleVisibilityChange, false);
 
+// extra event listeners for better behaviour
+document.addEventListener(
+	"focus",
+	function () {
+		handleVisibilityChange(true);
+	},
+	false
+);
+
+document.addEventListener(
+	"blur",
+	function () {
+		handleVisibilityChange(false);
+	},
+	false
+);
+
+window.addEventListener(
+	"focus",
+	function () {
+		handleVisibilityChange(true);
+	},
+	false
+);
+
+window.addEventListener(
+	"blur",
+	function () {
+		handleVisibilityChange(false);
+	},
+	false
+);
 /*************************************************
  * Title: 3 Ways to Disable Copy Text in Javascript & CSS
  * Author:  W.S. Toh
@@ -109,43 +187,10 @@ document.addEventListener(
 	false
 );
 
-function isInFullscreen() {
-	return !!(
-		document.fullscreenElement ||
-		document.mozFullScreenElement ||
-		document.webkitFullscreenElement ||
-		document.msFullscreenElement
-	);
-}
-
-function EventListenerFullscreen() {
-	if (isInFullscreen() == true) {
-		[
-			"fullscreenchange",
-			"webkitfullscreenchange",
-			"mozfullscreenchange",
-			"msfullscreenchange",
-		].forEach((eventType) =>
-			document.addEventListener(eventType, fullscreenchange_exit())
-		);
-	} else {
-		[
-			"fullscreenchange",
-			"webkitfullscreenchange",
-			"mozfullscreenchange",
-			"msfullscreenchange",
-		].forEach((eventType) =>
-			document.removeEventListener(eventType, fullscreenchange_exit())
-		);
-	}
-}
-
 function fullscreenchange_exit() {
 	if (isInFullscreen() == false) {
-		//penaltyFunc();
 		openFullscreen();
 	}
-	//EventListenerFullscreen();
 }
 
 $(document).keydown(function (event) {
@@ -175,7 +220,12 @@ $(document).keydown(function (event) {
 		return false;
 	}
 });
+
 window.onload = function () {
-	openFullscreen();
+	fullscreenchange_exit();
+	var visProp = getHiddenProp();
+	if (visProp) {
+		var evtname = visProp.replace(/[H|h]idden/, "") + "visibilitychange";
+		document.addEventListener(evtname, visChange);
+	}
 };
-//openFullscreen();

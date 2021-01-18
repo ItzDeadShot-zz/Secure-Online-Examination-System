@@ -20,6 +20,8 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE email = ?')) 
         // Account exists, now we verify the password.
         // Note: remember to use password_hash in your registration file to store the hashed passwords.
         if (password_verify($_POST['password'], $pass)) {
+        //if ( $_POST['password'] === $pass) {
+           
             // Verification success! User has loggedin!
             // Create sessions so we know the user is logged in, they basically act like cookies but remember the data on the server.
             session_regenerate_id();
@@ -28,11 +30,11 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE email = ?')) 
             header('location: admin/admin.php');
         } else {
             // Incorrect password
-            echo 'Incorrect username and/or password!';
+            echo 'Incorrect username and/or /password!';
         }
     } else {
         // Incorrect username
-        echo 'Incorrect username and/or password!';
+        echo 'Incorrect /username and/or password!';
     }
 	$stmt->close();
 }

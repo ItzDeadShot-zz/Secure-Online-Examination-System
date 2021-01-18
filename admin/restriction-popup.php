@@ -1,12 +1,8 @@
 <!-- Popup Modal HTML -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
 
 <style>
-/* The Modal (background) */
-.modal {
+/* The Warning Modal (background) */
+.warning_modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -20,8 +16,8 @@
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-/* Modal Content */
-.modal-content {
+/* Warning Modal Content */
+.warning_modal_content {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
@@ -29,33 +25,19 @@
   width: 80%;
 }
 
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
 </style>
 
 
-<div id="myModal" class="modal">
+<div id="popupRestriction" class="warning_modal">
 
   <!-- Modal content -->
-  <div class="modal-content">
+  <div class="warning_modal_content">
     <!-- <span class="close">&times;</span> -->
     <h1 style="color:red">Warning Leaving Windows</h1>
     <h3>Please wait for the countdown to continue the test.</h3>
-    <h3 id="countdown"></h3>
+    <h3 id="countdown_warning"></h3>
   </div>
 
 </div>
 
-<script src="assets/js/Restriction.js"></script>
+<script src="../assets/js/Restriction.js"></script>

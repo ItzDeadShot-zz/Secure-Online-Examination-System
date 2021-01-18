@@ -1,0 +1,1 @@
+admin.php ==> pressing cancel on delete confirm dialog still deletes the entry.

@@ -5,55 +5,46 @@ include("_header.php");
 
 $studExamObj = new StudentExam();
 $exams = $studExamObj->displyaRecordById($_SESSION["email"]);
-// include("_navbar.php");
 ?>
 
-<div style="padding-top: 5rem;">
-	<div class="row">
-		<div class="col-6">
-			<!--Today Card-->
-			<div class="cards" style="margin-bottom: 2rem;">
-				<div class="card-title"><b>Today</b></div>
-				
-				<!--Course Card-->
-				<div class="card-first">
-					<div>
-						<h4>CMT222</h4>
-						<span>SYSTEM ANALYSIS&DESIGN</span>
-					</div>
-					<div>
-						<h5>Test 1</h5>
-						<span>2.00pm - 4.00pm</span>
-						<div><button type="button" class="btn btn-outline-light float-right"style="margin-top:1rem;">Enter</button></div>
-					</div>
-				</div>
-				<!--Course Card End-->
-				
-			</div>
-			<!--Today Card End-->
-			
-			<!--Upcoming Card-->
-			<div class="cards">
-				<div class="card-title"><b>Upcoming</b></div>
-				
-				<!--Course Card-->
-				<div class="card-second">
-					<div>
-						<h4>CMT222</h4>
-						<span>SYSTEM ANALYSIS&DESIGN</span>
-					</div>
-					<div>
-						<h5>Test 1</h5>
-						<span>2.00pm - 4.00pm</span><br>
-						<span><b>17th March 2020</b></span>
-					</div>
-				</div>
-				<!--Course Card End-->
-				
-			</div>
-			<!--Upcoming Card End-->
-		</div>
-	</div>
+<div class="container">
+    <form action="take_exam.php" method="POST">
+        <div class="row">
+            <div class="col-4">
+                <?php
+                if ($exams == null) {
+                    echo "<br><br><br><p>No exam for now</p>";
+                } else {
+                    foreach ($exams as $exam) {
+                ?>
+                        <div class="card" style="width: 18rem;">
+                            <img class="card-img-top" src="assets/img/Logo.png" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $exam["course_name"]; ?></h5>
+                                <p class="card-text">Start time: <?php echo strtotime($exam['exam_date']); ?></p>
+                                <p class="card-text">Current time: <?php echo time(); ?></p>
+                                <?php
+                                if (strtotime((new DateTime())->format("d-m-Y H:i:s")) < strtotime($exam['exam_date'])) { ?>
+                                    <input type="submit" name="submit"
+                                    class="btn btn-primary" />
+                                    <input type="hidden" name="exam_id" id="exam_id" value="<?php echo $exam['exam_id']; ?>">
+                                <?php } else { ?>
+                                    <input name="Disabled" type="button" class="btn btn-primary" disabled="disabled" value="Disabled" />
+                                <?php
+                                }
+                                ?>
+
+                            </div>
+                    <?php
+                    }
+                }
+                    ?>
+
+                        </div>
+            </div>
+        </div>
+    </form>
+
 </div>
 
 <?php

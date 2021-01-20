@@ -22,7 +22,6 @@ if (!isset($_SESSION['id'], $_SESSION['role'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/adminlte.min.css">
-	<link rel="stylesheet" href="assets/css/style.css">
 
     <!-- ===== JS ===== -->
     <script src="assets/js/bootstrap.min.js"></script>
@@ -33,6 +32,9 @@ if (!isset($_SESSION['id'], $_SESSION['role'])) {
 
 <body id="body-pd">
     <header class="header" id="header">
-        <h6 style="color:white;"><?php echo $_SESSION["email"]; ?></h6>
-        <a href="logout.php" title="Logout">Logout</a> 
+        <p style="color:white;"><?php echo $_SESSION["email"]; ?></p>
+        <div class="header__img">
+            <img src="assets/img/perfil.jpg" alt="">
+        </div>
+        <a href="logout.php" tite="Logout">Logout</a> 
     </header>

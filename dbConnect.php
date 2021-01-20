@@ -4,7 +4,7 @@ if (!isset($_SESSION)) {
 }
 $host = "localhost";
 $username = "root";
-$password = "";
+$password = "Cmt322Root";
 $db = "examination-system";
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $con = new mysqli($host, $username, $password, $db);

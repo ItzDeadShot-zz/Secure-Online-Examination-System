@@ -36,7 +36,7 @@ if (isset($_POST["submit"])) {
     $stmt->bind_param("ssss", $name, $hash, $email, $role);
     if ($stmt->execute()) {
       $stmt->close();
-      header("location:signup.php");
+      header("location:index.php");
     } else {
       $con->error;
     }

@@ -8,7 +8,7 @@ class StudentExam
 {
 	private $servername = "localhost";
 	private $username   = "root";
-	private $password   = "";
+	private $password   = "Cmt322Root";
 	private $database   = "examination-system";
 	public  $con;
 
@@ -21,6 +21,21 @@ class StudentExam
 		} else {
 			return $this->con;
 		}
+	}
+
+	public function insertData($post, $id)
+	{
+		$answer = $this->con->real_escape_string($_POST['answer']);
+
+		$responseQuery = "INSERT INTO response(stud_id, response) VALUES(?, ?)";
+		$responseStmt = $this->con->prepare($responseQuery);
+		$responseStmt->bind_param("is", $id, $answer);
+		if ($responseStmt->execute()) {
+			echo "hoho";
+		} else {
+			echo $this->con->error;
+		}
+
 	}
 
 	// Fetch exam records for show listing
@@ -61,21 +76,18 @@ class StudentExam
 	}
 
 	// Fetch single data for edit from exam table
-	public function getStudents($id)
+	public function getExamInfo($id)
 	{
-		$query = "SELECT * FROM students WHERE exam_id=?";
+		$query = "SELECT * FROM exams WHERE exam_id=?";
 		$stmt = $this->con->prepare($query);
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result = $stmt->get_result();
 		if ($result->num_rows > 0) {
-			$data = array();
-			while ($row = $result->fetch_assoc()) {
-				$data[] = $row;
-			}
-			return $data;
+			$row = $result->fetch_assoc();
+			return $row;
 		} else {
-			return $this->con->error;
+			echo "Record not found";
 		}
 	}
 }

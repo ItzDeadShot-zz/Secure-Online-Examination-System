@@ -25,71 +25,75 @@ include("_navbar.php");
 
 <br><br>
 
-<?php
-if (isset($_POST["next"])) {
-?>
-  <div class="container">
-    <form action="add.php" method="POST">
-    <?php  
-    for($i = 1; $i <= $_POST["num_of_questions"]; ++$i) {
-      ?>
-      <div class="form-group">
-        <label for="course_name">Enter Question Number <?php echo $i;?>:</label>
-        <input type="text" class="form-control" name="question<?php echo $i;?>" placeholder="Enter Question" required="">
-      </div>
-      <?php  
-    }
-      ?>
-      <input type="hidden" name="course_name" value="<?php echo $_POST['course_name'];?>">
-      <input type="hidden" name="semester_year" value="<?php echo $_POST['semester_year'];?>">
-      <input type="hidden" name="num_of_questions" value="<?php echo $_POST['num_of_questions'];?>">
-      <input type="hidden" name="exam_date" value="<?php echo $_POST['exam_date'];?>">
-      <input type="hidden" name="exam_limit" value="<?php echo $_POST['exam_limit'];?>">
-      <input type="submit" name="submit" class="btn btn-primary" style="float:right;" value="Next">
-    </form>
+<div class="container">
+  <form method="post" id="load_excel_form" enctype="multipart/form-data" action="">
+    <div class="form-group">
+      <label for="course_name">Name:</label>
+      <input type="text" class="form-control" name="course_name" placeholder="Enter Course Name" required="">
+    </div>
+    <div class="form-group">
+      <label for="semester_year">Year/ Semester:</label>
+      <select class="form-control" id="semester_year" name="semester_year">
+        <option selected>Select Year/Semester</option>
+        <?php
+        foreach ($semesters as $code => $sem) {
+          echo "<option value='$code'> $sem</option>";
+        }
+        ?>
+      </select>
+    </div>
 
-    <a href="add.php"><button type="button" name="previous" class="btn btn-primary" style="float:left;">Previous</button></a>
-  </div>
+    <div class="form-group">
+      <label for="exam_date">Exam Date:</label>
+      <input type="datetime-local" class="form-control" name="exam_date" placeholder="Enter Exam Date" required="">
+    </div>
 
-<?php
-} else {
-?>
-  <div class="container">
-    <form action="" method="POST">
-      <div class="form-group">
-        <label for="course_name">Name:</label>
-        <input type="text" class="form-control" name="course_name" placeholder="Enter Course Name" required="">
-      </div>
-      <div class="form-group">
-        <label for="semester_year">Year/ Semester:</label>
-        <select class="form-control" id="semester_year" name="semester_year">
-          <option selected>Select Year/Semester</option>
-          <?php
-          foreach ($semesters as $code => $sem) {
-            echo "<option value='$code'> $sem</option>";
-          }
-          ?>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="num_of_questions">Number of Questions:</label>
-        <input type="number" class="form-control" name="num_of_questions" placeholder="Enter number of questions" required="">
-      </div>
-      <div class="form-group">
-        <label for="exam_date">Exam Date:</label>
-        <input type="date" class="form-control" name="exam_date" placeholder="Enter Exam Date" required="">
-      </div>
-      <div class="form-group">
-        <label for="exam_limit">Exam Limit (Minutes):</label>
-        <input type="number" class="form-control" name="exam_limit" placeholder="Enter Exam Limit" required="">
-      </div>
-      <input type="submit" name="next" class="btn btn-primary" style="float:right;" value="Next">
-    </form>
-  </div>
-<?php
+    <div class="form-group">
+      <label for="exam_limit">Exam Limit (Minutes):</label>
+      <input type="number" class="form-control" name="exam_limit" placeholder="Enter Exam Limit" required="">
+    </div>
 
-}
-?>
+    <div class="form-group">
+      <label for="exam_limit">Select Exam File (pdf): </label>
+      <input type="file" class="form-control" name="exam_file" accept=".pdf" required="">
+    </div>
+
+    <label for="exam_limit">Select Students (xls, xlsx): </label>
+    <table class="table">
+      <tr>
+        <td width="25%" align="right">Select Excel File</td>
+        <td width="50%"><input type="file" name="import_excel" id="import_excel" accept=".xls,.xlsx" /></td>
+      </tr>
+    </table>
+
+    <div id="excel_area"></div>
+
+    <input type="submit" name="submit" class="btn btn-primary" style="float:right;" value="Submit">
+  </form>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('#import_excel').on('change', function(event) {
+      event.preventDefault();
+      $.ajax({
+        url: "upload.php",
+        method: "POST",
+        data: new FormData(document.getElementById('load_excel_form')),
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data) {
+          console.log(data);
+          $('#excel_area').html(data);
+          // $('table').css('width', '100%');
+          $('table').addClass('table');
+          $('table').removeClass('gridlines');
+        }
+      })
+    });
+  });
+</script>
 <?php
 include("_footer.php");
 ?>

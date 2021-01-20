@@ -16,7 +16,7 @@ $semesters = array(
 if (isset($_GET['editId']) && !empty($_GET['editId'])) {
   $editId = $_GET['editId'];
   $exam = $examObj->displyaRecordById($editId);
-  $questions = $examObj->getQuestions($editId);
+  $stud = $examObj->getStudents($editId);
 }
 
 // Update Record in customer table
@@ -33,7 +33,7 @@ include("_navbar.php");
 </div><br>
 
 <div class="container">
-  <form action="edit.php" method="POST">
+  <form method="post" id="load_excel_form" enctype="multipart/form-data" action="">
     <div class="form-group">
       <label for="course_name">Name:</label>
       <input type="text" class="form-control" name="course_name" placeholder="Enter Course Name" value="<?php echo $exam['course_name']; ?>" required="">
@@ -55,7 +55,7 @@ include("_navbar.php");
 
     <div class="form-group">
       <label for="exam_date">Exam Date:</label>
-      <input type="date" class="form-control" name="exam_date" placeholder="Enter Exam Date" value="<?php echo $exam['exam_date']; ?>" required="">
+      <input type="datetime-local" class="form-control" name="exam_date" placeholder="Enter Exam Date" value="<?php echo $exam['custom_date']; ?>" required="">
     </div>
 
     <div class="form-group">
@@ -66,24 +66,42 @@ include("_navbar.php");
       <input type="hidden" name="id" value="<?php echo $exam['exam_id']; ?>">
     </div>
 
-    <br>
-    <div class="card text-center" style="padding:15px;">
-      <h4>Exam Questions</h4>
-    </div><br>
+    <div class="form-group">
+      <label for="exam_limit">Update the Exam File (pdf), current file is "<?php echo $exam['exam_file']; ?>" : </label>
+      <input type="file" class="form-control" name="exam_file" accept=".pdf" value="<?php echo $exam['exam_file']; ?>" required="">
+    </div>
 
-    <?php
-    for ($i = 0; $i < count($questions); $i++) {
-    ?>
-      <div class="form-group">
-        <label for="exam_limit">Question Number <?php echo  $i + 1; ?>:</label>
-        <input type="text" class="form-control" name="question<?php echo  $i + 1; ?>" placeholder="Enter Exam Limit" value="<?php echo $questions[$i]['question']; ?>" required="">
-      </div>
-      <input type="hidden" name="ques<?php echo  $i + 1; ?>_id" value="<?php echo $questions[$i]['ques_id']; ?>">
-    <?php
-    }
-    ?>
+    <label for="exam_limit">Select Students (xls, xlsx): </label>
+    <table class="table">
+      <tr>
+        <td width="25%" align="right">Select Excel File</td>
+        <td width="50%"><input type="file" name="import_excel" id="import_excel" accept=".xls,.xlsx" /></td>
+      </tr>
+    </table>
 
-    <input type="hidden" name="num_of_questions" value="<?php echo count($questions);?>">
+    <div id="excel_area">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Matric</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          foreach ($stud as $s) { ?>
+            <tr>
+              <td><?php echo $s['name']; ?></td>
+              <td><?php echo $s['email']; ?></td>
+              <td><?php echo $s['matric']; ?></td>
+            </tr>
+          <?php
+          }
+          ?>
+        </tbody>
+      </table>
+    </div>
 
     <input type="submit" name="update" class="btn btn-primary" style="float:right;" value="Update">
 </div>
@@ -91,6 +109,29 @@ include("_navbar.php");
 </form>
 </div>
 
+<script>
+  $(document).ready(function() {
+    $('#import_excel').on('change', function(event) {
+      event.preventDefault();
+      $.ajax({
+        url: "upload.php",
+        method: "POST",
+        data: new FormData(document.getElementById('load_excel_form')),
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data) {
+          console.log(data);
+          $('#excel_area').html(data);
+          // $('table').css('width', '100%');
+          $('table').addClass('table');
+          $('table').removeClass('gridlines');
+        }
+      })
+    });
+  });
+  moment(date).format("YYYY-MM-DDTkk:mm");
+</script>
 <?php
 include("_footer.php");
 ?>

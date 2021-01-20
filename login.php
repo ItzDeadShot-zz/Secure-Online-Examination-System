@@ -1,4 +1,7 @@
 <?php
+if (!isset($_SESSION)) {
+    session_start();
+}
 include("dbConnect.php");
 
 if ( !isset($_POST['email'], $_POST['password']) ) {
@@ -7,7 +10,7 @@ if ( !isset($_POST['email'], $_POST['password']) ) {
 }
 
 // Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE email = ?')) {
+if ($stmt = $con->prepare("SELECT id, password FROM accounts WHERE email = ? and role = 'student'")) {
 	// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 	$stmt->bind_param('s', $_POST['email']);
 	$stmt->execute();
@@ -27,7 +30,9 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE email = ?')) 
             session_regenerate_id();
             $_SESSION['email'] = $_POST['email'];
             $_SESSION['id'] = $id;
-            header('location: admin/admin.php');
+            $_SESSION['role'] = 'student';
+
+            header('location: dash.php');
         } else {
             // Incorrect password
             echo 'Incorrect username and/or /password!';
@@ -38,4 +43,3 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE email = ?')) 
     }
 	$stmt->close();
 }
-?>

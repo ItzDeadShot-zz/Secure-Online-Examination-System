@@ -2,28 +2,43 @@
 include("dbConnect.php");
 
 if (isset($_POST["submit"])) {
-  /* Name. */
-  $name = $_POST['name'];;
 
-  /* Password. */
-  $password = $_POST['password'];;
+  if (
+    empty($_POST['name']) ||
+    empty($_POST['password']) ||
+    empty($_POST['email'])
+  ) {
 
-  /* Email */
-  $email = $_POST['email'];
+    die('Please fill all required fields!');
+  }
 
-  /* Secure password hash. */
-  $hash = password_hash($password, PASSWORD_DEFAULT);
-
-  /* Insert query template. */
-  $query = "INSERT INTO `accounts`( `name`, `password`, `email`) VALUES (?, ?, ?)";
-
-  /* Execute the query. */
-  $stmt = $con->prepare($query);
-  $stmt->bind_param("sss", $name, $hash, $email);
-  if ($stmt->execute()) {
-    $stmt->close();
-    header("location:signup.php");
+  if (($_POST['password'] !== $_POST['confirm_password']) && ($_POST['email'] !== $_POST['confirm_email'])) {
+    die('Password and Confirm password should match!');
   } else {
-    $con->error;
+    /* Name. */
+    $name = $_POST['name'];;
+
+    /* Password. */
+    $password = $_POST['password'];;
+
+    /* Email */
+    $email = $_POST['email'];
+
+    $role = "student";
+    /* Secure password hash. */
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+
+    /* Insert query template. */
+    $query = "INSERT INTO `accounts`( `name`, `password`, `email`, `role`) VALUES (?, ?, ?, ?)";
+
+    /* Execute the query. */
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("ssss", $name, $hash, $email, $role);
+    if ($stmt->execute()) {
+      $stmt->close();
+      header("location:signup.php");
+    } else {
+      $con->error;
+    }
   }
 }

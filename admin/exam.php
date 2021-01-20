@@ -32,7 +32,7 @@ class Exam
     $exam_date = $this->con->real_escape_string($_POST['exam_date']);
     $exam_limit = $this->con->real_escape_string($_POST['exam_limit']);
 
-    $exam_file_name = $course_name . ".pdf";
+    $exam_file_name = $_FILES["exam_file"]["name"];
 
     $examQuery = "INSERT INTO exams(course_name,semester_year,exam_date, exam_limit, exam_file) VALUES(?, ?, ?, ?, ?)";
     $examStmt = $this->con->prepare($examQuery);
@@ -68,6 +68,7 @@ class Exam
         } else {
           echo $this->con->error;
         }
+
         if ($_FILES["import_excel"]["name"] != '') {
           $allowed_extension = array('xls', 'csv', 'xlsx');
           $file_array = explode(".", $_FILES["import_excel"]["name"]);
@@ -94,10 +95,10 @@ class Exam
             );
 
             foreach ($data as $row) {
-              $query = "INSERT INTO `students`(`name`, `matric`, `email`, `exam_id`) VALUES (?, ?, ?, ?)";
+              $query = "INSERT INTO `students`(`name`, `email`, `exam_id`) VALUES (?, ?, ?)";
 
               $statement = $this->con->prepare($query);
-              $statement->bind_param("sisi", $row[0], $row[2], $row[1], $exam_id);
+              $statement->bind_param("ssi", $row[0], $row[1], $exam_id);
               $statement->execute();
             }
             $message = '<div class="alert alert-success">Data Imported Successfully</div>';
@@ -116,6 +117,7 @@ class Exam
 		*/ else {
       echo "File <html><b><i>" . $exam_file_name . "</i></b></html> already exists in your folder. Please rename the file and try again.";
     }
+    header("location:admin.php?msg=insert");
   }
 
   // Fetch exam records for show listing
@@ -179,35 +181,87 @@ class Exam
     $semester_year = $this->con->real_escape_string($_POST['semester_year']);
     $exam_date = $this->con->real_escape_string($_POST['exam_date']);
     $exam_limit = $this->con->real_escape_string($_POST['exam_limit']);
+    $exam_file_name = $_FILES["exam_file"]["name"];
     $id = $this->con->real_escape_string($_POST['id']);
+
+    $query = "SELECT * FROM exams WHERE exam_id = ?";
+    $stmt = $this->con->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+    }
+
     if (!empty($id) && !empty($postData)) {
+      if ($exam_file_name) {
+        $target = "../uploads/";
+        $fileTarget = $target . $exam_file_name;
+        $tempFileName = $_FILES["exam_file"]["tmp_name"];
+        unlink($fileTarget);
+        $result = move_uploaded_file($tempFileName, $fileTarget);
+      } else {
+        $exam_file_name = $row["exam_file"];
+      }
 
-      $examUpdateQuery = "UPDATE exams SET course_name = ?, semester_year = ?, exam_date = ?, exam_limit = ? WHERE exam_id = ?";
+      $examUpdateQuery = "UPDATE exams SET course_name = ?, semester_year = ?, exam_date = ?, exam_limit = ?, exam_file = ? WHERE exam_id = ?";
       $examUpdateStmt = $this->con->prepare($examUpdateQuery);
-      $examUpdateStmt->bind_param("sisii", $course_name, $semester_year, $exam_date, $exam_limit, $id);
-
+      $examUpdateStmt->bind_param("sisisi", $course_name, $semester_year, $exam_date, $exam_limit, $exam_file_name, $id);
 
       if ($examUpdateStmt->execute()) {
         $examUpdateStmt->close();
-        for ($i = 1; $i <= $_POST["num_of_questions"]; $i++) {
-          $question = $this->con->real_escape_string($_POST["question" . $i]);
-          $ques_id = $this->con->real_escape_string($_POST["ques" . $i . "_id"]);
-          echo $ques_id . "<br>";
-          $questionUpdateQuery = "UPDATE questions SET question = ? WHERE ques_id = ?";
-          $questionUpdateStmt = $this->con->prepare($questionUpdateQuery);
-          $questionUpdateStmt->bind_param("si", $question, $ques_id);
-          if ($questionUpdateStmt->execute()) {
-            $questionUpdateStmt->close();
+        if ($_FILES["import_excel"]["name"] != '') {
+          $allowed_extension = array('xls', 'csv', 'xlsx');
+          $file_array = explode(".", $_FILES["import_excel"]["name"]);
+          $file_extension = end($file_array);
+
+          if (in_array($file_extension, $allowed_extension)) {
+            $file_name = time() . '.' . $file_extension;
+            move_uploaded_file($_FILES['import_excel']['tmp_name'], $file_name);
+            $file_type = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file_name);
+            $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($file_type);
+
+            $spreadsheet = $reader->load($file_name);
+
+            unlink($file_name);
+            $sheet = $spreadsheet->getActiveSheet();
+            $highestRow = $sheet->getHighestRow();
+            $highestColumn = $sheet->getHighestColumn();
+
+            $data = $sheet->rangeToArray(
+              'A2:' . $highestColumn . $highestRow,
+              NULL,
+              TRUE,
+              FALSE
+            );
+
+            $studQuery = "DELETE FROM students WHERE exam_id = ?";
+            $studStmt = $this->con->prepare($studQuery);
+            $studStmt->bind_param("i", $id);
+            if ($studStmt->execute()) {
+              $studStmt->close();
+              foreach ($data as $row) {
+                $query = "INSERT INTO `students`(`name`, `email`, `exam_id`) VALUES (?, ?, ?, ?)";
+                $statement = $this->con->prepare($query);
+                $statement->bind_param("ssi", $row[0], $row[1], $id);
+                $statement->execute();
+                $statement->close();
+              }
+            } else {
+              $this->con->error;
+            }
+            $message = '<div class="alert alert-success">Data Imported Successfully</div>';
           } else {
-            $status = false;
-            echo $this->con->error;
+            $message = '<div class="alert alert-danger">Only .xls .csv or .xlsx file allowed</div>';
           }
+        } else {
+          $message = '<div class="alert alert-danger">Please Select File</div>';
         }
-        if ($status) header("Location:admin.php?msg1=update");
       } else {
         echo $this->con->error;
       }
     }
+    header("location:admin.php?msg=update");
   }
 
 

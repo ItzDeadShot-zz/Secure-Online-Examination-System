@@ -4,6 +4,12 @@ include "_navbar.php";
 include 'exam.php';
 
 $examObj = new Exam();
+
+// Delete record from table
+if (isset($_GET['deleteId']) && !empty($_GET['deleteId'])) {
+  $deleteId = $_GET['deleteId'];
+  $examObj->deleteRecord($deleteId);
+}
 ?>
 
 <br><br>
@@ -66,7 +72,7 @@ $examObj = new Exam();
                         <a href="edit.php?editId=<?php echo $exam['exam_id'] ?>" style="color:green">
                         <button type="button" class="btn btn-primary">Update</button>
                             <!--<i class="fa fa-pencil" aria-hidden="true"></i>--></a>&nbsp 
-                        <a href="index.php?deleteId=<?php echo $exam['exam_id'] ?>" style="color:red" onclick="confirm('Are you sure you want to delete this exam?')">
+                        <a href="admin.php?deleteId=<?php echo $exam['exam_id'] ?>" style="color:red" onclick="confirm('Are you sure you want to delete this exam?')">
                         <button type="button" class="btn btn-primary">Delete</button>
                             <!--<i class="fa fa-trash" aria-hidden="true">--></i>
                         </a>

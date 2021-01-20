@@ -68,7 +68,7 @@ include("_navbar.php");
 
     <div class="form-group">
       <label for="exam_limit">Update the Exam File (pdf), current file is "<?php echo $exam['exam_file']; ?>" : </label>
-      <input type="file" class="form-control" name="exam_file" accept=".pdf" value="<?php echo $exam['exam_file']; ?>" required="">
+      <input type="file" class="form-control" name="exam_file" accept=".pdf" value="<?php echo $exam['exam_file']; ?>">
     </div>
 
     <label for="exam_limit">Select Students (xls, xlsx): </label>
@@ -85,7 +85,6 @@ include("_navbar.php");
           <tr>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
-            <th scope="col">Matric</th>
           </tr>
         </thead>
         <tbody>
@@ -94,7 +93,6 @@ include("_navbar.php");
             <tr>
               <td><?php echo $s['name']; ?></td>
               <td><?php echo $s['email']; ?></td>
-              <td><?php echo $s['matric']; ?></td>
             </tr>
           <?php
           }

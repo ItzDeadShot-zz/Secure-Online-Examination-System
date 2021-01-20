@@ -62,7 +62,7 @@ include("_navbar.php");
     <table class="table">
       <tr>
         <td width="25%" align="right">Select Excel File</td>
-        <td width="50%"><input type="file" name="import_excel" id="import_excel" accept=".xls,.xlsx" /></td>
+        <td width="50%"><input type="file" name="import_excel" id="import_excel" accept=".xls,.xlsx" required/></td>
       </tr>
     </table>
 

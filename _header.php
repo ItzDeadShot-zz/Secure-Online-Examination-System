@@ -1,3 +1,13 @@
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+if (!isset($_SESSION['id'], $_SESSION['role'])) {
+    header('location:index.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,12 +31,10 @@
 </head>
 
 <body id="body-pd">
-    <nav class="header" id="header">
-        <div class="header__toggle">
-            <i class='bx bx-menu' id="header-toggle"></i>
-        </div>
-
+    <header class="header" id="header">
+        <p style="color:white;"><?php echo $_SESSION["email"]; ?></p>
         <div class="header__img">
             <img src="assets/img/perfil.jpg" alt="">
         </div>
-    </nav>
+        <a href="logout.php" tite="Logout">Logout</a> 
+    </header>

@@ -22,22 +22,36 @@ include("_navbar.php");
 						<div class="col-sm-12">
 						  <input type="name" class="form-control" id="name" name="name" placeholder="Name" required>
 						</div>
-                      </div>
+					  </div>
+					  
                       <div class="form-group row">
 						<div class="col-sm-12">
 						  <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
 						</div>
 					  </div>
+					  
+					  <div class="form-group row">
+						<div class="col-sm-12">
+						  <input type="email" class="form-control" id="email" name="confirm_email" placeholder="Confirm Email" required>
+						</div>
+					  </div>
+
 					  <div class="form-group row">
 						<div class="col-sm-12">
 						  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
 						</div>
 					  </div>
+					  
+					  <div class="form-group row">
+						<div class="col-sm-12">
+						  <input type="password" class="form-control" id="password" name="confirm_password" placeholder="Confirm Password" required>
+						</div>
+					  </div>
+
 					</div>
 					<!-- /.card-body -->
 					<div class="card-footer">
 					  <button type="submit" class="btn btn-default" name ="submit"value="Login">Sign up</button>
-					  <button type="submit" class="btn btn-default float-right">Cancel</button>
 					</div>
 					<!-- /.card-footer -->
 				  </form>

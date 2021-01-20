@@ -11,6 +11,7 @@
     <!-- ===== CSS ===== -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/adminlte.min.css">
 
     <!-- ===== JS ===== -->
     <script src="../assets/js/bootstrap.min.js"></script>
@@ -24,9 +25,5 @@
     <header class="header" id="header">
         <div class="header__toggle">
             <i class='bx bx-menu' id="header-toggle"></i>
-        </div>
-
-        <div class="header__img">
-            <img src="../assets/img/perfil.jpg" alt="">
         </div>
     </header>

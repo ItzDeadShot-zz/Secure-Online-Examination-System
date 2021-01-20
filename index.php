@@ -1,6 +1,6 @@
 <?php
 include("dbConnect.php");
-$title = "SOES";
+$title = "Login";
  
 if(isset($_GET['lmsg']) && $_GET['lmsg'] == true)
 {
@@ -42,7 +42,7 @@ if(isset($_GET['lmsg']) && $_GET['lmsg'] == true)
 		<div class="col-md-6" id="viewHeight2">
 			<div style="width:60%;">
 				<div>
-					<h3>Log In</h3>
+					<h3>Student Log In</h3>
 				</div>
 				<!-- form start -->
 				<form action="login.php" method="POST">

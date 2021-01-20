@@ -1,13 +1,8 @@
 <?php
-
-// Include database file
-include 'exam.php';
-
-$examObj = new Exam();
-$title = "Login";
-
+include("../dbConnect.php");
+$title = "Sign Up";
+unset($_SESSION['errors']);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,13 +10,13 @@ $title = "Login";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../assets/css/login.css">
     <!-- ===== BOX ICONS ===== -->
     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- ===== CSS ===== -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/styles.css">
-	<link rel="stylesheet" href="../assets/css/login.css">
     <link rel="stylesheet" href="../assets/css/adminlte.min.css">
 
     <!-- ===== JS ===== -->
@@ -37,36 +32,40 @@ $title = "Login";
 				<img src="../assets/img/Logo.ico" style="display:block"></img>
 				<figcaption class="fs-4" style="text-align:center;padding-top:2rem">Secure Online <br>Examination System</figcaption>
 			</figure>
-		</div>		
-			
+		</div>	
+		
 		<div class="col-md-6" id="viewHeight2">
-			<div style="width:60%;">
+			<div style="width:80%;">
 				<div>
-					<h3>Admin Log In</h3>
-					<?php 
-					if(isset($_SESSION["errors"])) {
-						echo "<span style>" .$_SESSION["errors"] . "</span>";
-					}
-					?>
+					<h3>Admin Sign Up</h3>
 				</div>
 				<!-- form start -->
-				<form action="login.php" method="POST">
-					<div class="form-group">
-						<input type="email" class="form-control" id="email" name="email" placeholder="Email">
+				 <form class="form-horizontal" action="register.php" method="POST">
+					<div class="form-group row">
+						<input type="name" class="form-control" id="name" name="name" placeholder="Name" required>
 					</div>
-					<div class="form-group">
+				  
+					<div class="form-group row">
+						<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+					</div>
+				  
+					<div class="form-group row">
+						<input type="email" class="form-control" id="confirm_email" name="confirm_email" placeholder="Confirm Email" required>
+					</div>
+
+					<div class="form-group row">
 						<input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
 					</div>
-					<div style=" position: relative;">
-						<button type="submit" class="btn btn-success" style="border-radius:20px" >Sign in</button>
-						<a href="signup.php" class="btn btn-outline-primary float-right" style="border-radius:20px" value="Login">Sign up</a>	  
+				  
+					<div class="form-group row">
+						<input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
 					</div>
-				</form>
-			</div>
+
+					<button type="submit" class="btn btn-success float-right" name ="submit" value="Login">Sign up</button>
+				</form>	
+			</div>	  
 		</div>
 	</div>
 <?php
 include("_footer.php");
 ?>
-
-

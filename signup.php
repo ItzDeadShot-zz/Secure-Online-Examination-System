@@ -36,7 +36,7 @@ $title = "Sign Up";
 		<div class="col-md-6" id="viewHeight2">
 			<div style="width:80%;">
 				<div>
-					<h3>Sign Up</h3>
+					<h3>Student Sign Up</h3>
 				</div>
 				<!-- form start -->
 				 <form class="form-horizontal" action="register.php" method="POST">

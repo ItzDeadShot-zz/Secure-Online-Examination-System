@@ -2,7 +2,7 @@
 include "_header.php";
 include "_navbar.php";
 include 'exam.php';
-
+$title = "Admin";
 $examObj = new Exam();
 
 // Delete record from table
@@ -12,9 +12,7 @@ if (isset($_GET['deleteId']) && !empty($_GET['deleteId'])) {
 }
 ?>
 
-<br><br>
-
-<div class="container">
+<div class="container" style="padding-top:5rem">
     <?php
     if (isset($_GET['msg1']) == "insert") {
         echo "<div class='alert alert-success alert-dismissible'>
@@ -36,12 +34,13 @@ if (isset($_GET['deleteId']) && !empty($_GET['deleteId'])) {
     }
     ?>
 
-    <h2>View Records
+    <h2>View Exams
         <a href="add.php" class="btn btn-primary" style="float:right;">Add New Record</a>
     </h2>
 
-    <div class="input-group"> <span class="input-group-addon">Filter</span>
-        <input id="filter" type="text" class="form-control" placeholder="Type here...">
+    <div class="input-group" style="padding-bottom:1rem;">
+		<span class="input-group-addon" style="align-self:center;padding-right:1rem;">Filter</span>
+        <input id="filter" style="border-radius: 5px;" type="text" class="form-control" placeholder="Type here...">
     </div>
 
     <table class="table table-hover">

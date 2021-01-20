@@ -1,5 +1,9 @@
 <?php
 
+if (!isset($_SESSION)) {
+    session_start();
+}
+
 // Include database file
 include 'exam.php';
 $title = "Edit Exam";

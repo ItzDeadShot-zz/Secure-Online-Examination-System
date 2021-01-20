@@ -9,51 +9,52 @@ $exams = $studExamObj->displyaRecordById($_SESSION["email"]);
 ?>
 
 <div style="padding-top: 5rem;">
+	<form action="take_exam.php" method="POST">
 	<div class="row">
 		<div class="col-6">
 			<!--Today Card-->
 			<div class="cards" style="margin-bottom: 2rem;">
-				<div class="card-title"><b>Today</b></div>
-				
+				<div class="card-title"><b>Exam</b></div>
+
 				<!--Course Card-->
-				<div class="card-first">
-					<div>
-						<h4>CMT222</h4>
-						<span>SYSTEM ANALYSIS&DESIGN</span>
-					</div>
-					<div>
-						<h5>Test 1</h5>
-						<span>2.00pm - 4.00pm</span>
-						<div><button type="button" class="btn btn-outline-light float-right"style="margin-top:1rem;">Enter</button></div>
-					</div>
-				</div>
+				<?php
+				if ($exams == null) {
+					echo "<br><br><br><p>No exam for now</p>";
+				} else {
+					foreach ($exams as $exam) {
+				?>
+						<div class="card-first">
+							<div>
+								<h4><?php echo $exam["course_name"]; ?></h4>
+								<span>SYSTEM ANALYSIS&DESIGN</span>
+							</div>
+							<div>
+								<h5>Exam</h5>
+								<span><?php echo $exam['exam_date']; ?></span>
+								<?php
+								if (strtotime((new DateTime())->format("d-m-Y H:i:s")) < strtotime($exam['exam_date'])) { ?>
+									<button type="submit" class="btn btn-outline-light float-right" style="margin-top:1rem;" name="submit">Enter</button>
+									<input type="hidden" name="exam_id" id="exam_id" value="<?php echo $exam['exam_id']; ?>">
+								<?php } else { ?>
+									<button type="submit" class="btn btn-outline-light float-right" style="margin-top:1rem;" name="Disabled" disabled="disabled">Enter</button>
+								<?php
+								}
+								?>
+							</div>
+						</div>
+				<?php
+					}
+				}
+				?>
 				<!--Course Card End-->
-				
+
 			</div>
 			<!--Today Card End-->
-			
-			<!--Upcoming Card-->
-			<div class="cards">
-				<div class="card-title"><b>Upcoming</b></div>
-				
-				<!--Course Card-->
-				<div class="card-second">
-					<div>
-						<h4>CMT222</h4>
-						<span>SYSTEM ANALYSIS&DESIGN</span>
-					</div>
-					<div>
-						<h5>Test 1</h5>
-						<span>2.00pm - 4.00pm</span><br>
-						<span><b>17th March 2020</b></span>
-					</div>
-				</div>
-				<!--Course Card End-->
-				
-			</div>
-			<!--Upcoming Card End-->
+
 		</div>
 	</div>
+	</form>
+	
 </div>
 
 <?php

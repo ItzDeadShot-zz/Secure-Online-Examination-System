@@ -1,4 +1,7 @@
 <?php
+if (!isset($_SESSION)) {
+    session_start();
+}
 include "_header.php";
 include "_navbar.php";
 include 'exam.php';

@@ -31,7 +31,6 @@ class StudentExam
 		$responseStmt = $this->con->prepare($responseQuery);
 		$responseStmt->bind_param("is", $id, $answer);
 		if ($responseStmt->execute()) {
-			echo "hoho";
 		} else {
 			echo $this->con->error;
 		}

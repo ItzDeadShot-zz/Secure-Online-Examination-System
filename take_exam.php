@@ -12,32 +12,32 @@ if (isset($_POST['submit']) && !empty($_POST['exam_id'])) {
 // include("_navbar.php");
 ?>
 <div style="padding-top: 5rem;">
-	<input type="hidden" value="<?php echo $exam["exam_limit"]; ?>" id="time_limit">
-	<div>
-		<form action="submit_answer.php" method="POST" id="Questions">
-			<div class="row">
-				<div class="col-6">
-					<div>
-						<div id="time">
+    <input type="hidden" value="<?php echo $exam["exam_limit"]; ?>" id="time_limit">
+    <div>
+        <form action="submit_answer.php" method="POST" id="Questions">
+            <div class="row">
+                <div class="col-6">
+                    <div>Remaining Time:
+                        <div id="time">
 
-						</div>
-					</div>
-					<div>
-						<iframe style="height:100vh;" src="uploads/as.pdf" width="100%" height="100%"></iframe>
-					</div>
-				</div>
-				<div class="col-6">
-					<div>
-						<label for="answer">Enter your answer here:</label>
-						<textarea rows="8" cols="8" name="answer" class="form-control" id="answer" placeholder="Write your answer here..." required></textarea>
-					</div>
-					<div style="margin-top: 1rem;" class="float-right">
-						<input name="submitted" type="submit" class="btn btn-primary" value="Submit Answers" onsubmit="sessionStorage.clear();" />
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
+                        </div>
+                    </div>
+                    <div>
+                        <iframe style="height:100vh;" src="uploads/<?php echo $exam["exam_file"]; ?>" width="100%" height="100%"></iframe>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div>
+                        <label for="answer">Enter your answer here:</label>
+                        <textarea rows="8" cols="15" name="answer" class="form-control" id="answer" placeholder="Write your answer here..." required></textarea>
+                    </div>
+                    <div style="margin-top: 1rem;" class="float-right">
+                        <input name="submitted" type="submit" class="btn btn-primary" value="Submit Answers" onclick="clearTimer()" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <script type="text/javascript">
     function startTimer(duration, display) {
@@ -78,7 +78,11 @@ if (isset($_POST['submit']) && !empty($_POST['exam_id'])) {
 
     function SubmitFunction() {
         document.getElementById('Questions').submit();
+    }
 
+    function clearTimer() {
+        window.sessionStorage.removeItem("seconds");
+        window.sessionStorage.removeItem("minutes");
     }
 </script>
 <?php

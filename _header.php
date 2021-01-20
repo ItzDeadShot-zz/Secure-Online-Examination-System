@@ -23,6 +23,7 @@ if (!isset($_SESSION['id'], $_SESSION['role'])) {
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/adminlte.min.css">
 	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="assets/css/login.css">
 
     <!-- ===== JS ===== -->
     <script src="assets/js/bootstrap.min.js"></script>

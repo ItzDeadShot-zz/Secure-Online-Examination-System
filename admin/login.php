@@ -2,7 +2,7 @@
 if (!isset($_SESSION)) {
     session_start();
 }
-unset($_SESSION['errors']);
+
 include("../dbConnect.php");
 
 if ( !isset($_POST['email'], $_POST['password']) ) {
@@ -44,5 +44,4 @@ if ($stmt = $con->prepare("SELECT id, password FROM accounts WHERE email = ? and
         $_SESSION['errors'] = "Your username or password was incorrect.";
     }
     $stmt->close();
-    header('location: index.php');
 }

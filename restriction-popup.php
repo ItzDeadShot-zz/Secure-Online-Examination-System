@@ -40,4 +40,4 @@
 
 </div>
 
-<script src="../assets/js/Restriction.js"></script>
+<script src="assets/js/Restriction.js"></script>

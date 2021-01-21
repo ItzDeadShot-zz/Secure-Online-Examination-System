@@ -26,7 +26,6 @@ $exams = $studExamObj->displyaRecordById($_SESSION["email"]);
 						<div class="card-first">
 							<div>
 								<h4><?php echo $exam["course_name"]; ?></h4>
-								<span>SYSTEM ANALYSIS&DESIGN</span>
 							</div>
 							<div>
 								<h5>Exam</h5>

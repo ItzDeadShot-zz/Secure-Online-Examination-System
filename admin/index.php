@@ -58,8 +58,7 @@ $title = "Login";
 						<input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
 					</div>
 					<div style=" position: relative;">
-						<button type="submit" class="btn btn-success" style="border-radius:20px" >Sign in</button>
-						<a href="signup.php" class="btn btn-outline-primary float-right" style="border-radius:20px" value="Login">Sign up</a>	  
+						<button type="submit" class="btn btn-success" style="border-radius:20px" >Sign in</button>  
 					</div>
 				</form>
 			</div>

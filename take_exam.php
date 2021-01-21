@@ -2,6 +2,7 @@
 include("student_exam.php");
 $title = "SEOE";
 include("_header.php");
+include("restriction-popup.php");
 
 $studExamObj = new StudentExam();
 if (isset($_POST['submit']) && !empty($_POST['exam_id'])) {

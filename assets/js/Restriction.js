@@ -186,6 +186,14 @@ document.addEventListener(
 	},
 	false
 );
+function isInFullscreen() {
+	return !!(
+		document.fullscreenElement ||
+		document.mozFullScreenElement ||
+		document.webkitFullscreenElement ||
+		document.msFullscreenElement
+	);
+}
 
 function fullscreenchange_exit() {
 	if (isInFullscreen() == false) {

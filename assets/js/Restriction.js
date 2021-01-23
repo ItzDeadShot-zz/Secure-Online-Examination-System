@@ -186,6 +186,14 @@ document.addEventListener(
 	},
 	false
 );
+function isInFullscreen() {
+	return !!(
+		document.fullscreenElement ||
+		document.mozFullScreenElement ||
+		document.webkitFullscreenElement ||
+		document.msFullscreenElement
+	);
+}
 
 function fullscreenchange_exit() {
 	if (isInFullscreen() == false) {
@@ -221,11 +229,10 @@ $(document).keydown(function (event) {
 	}
 });
 
-window.onload = function () {
-	fullscreenchange_exit();
+
+fullscreenchange_exit();
 	var visProp = getHiddenProp();
 	if (visProp) {
 		var evtname = visProp.replace(/[H|h]idden/, "") + "visibilitychange";
 		document.addEventListener(evtname, visChange);
 	}
-};

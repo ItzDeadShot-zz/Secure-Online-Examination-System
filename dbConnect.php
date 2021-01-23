@@ -2,6 +2,12 @@
 if (!isset($_SESSION)) {
 	session_start();
 }
+
+if (!isset($_SESSION["token"])) {
+	$_SESSION['token'] = bin2hex(random_bytes(24)); //generating Anti-CSRF Token
+}
+
+
 $host = "localhost";
 $username = "root";
 $password = "Cmt322Root";

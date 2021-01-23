@@ -61,6 +61,8 @@ unset($_SESSION['errors']);
 						<input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
 					</div>
 
+					<input type="hidden" name="token" value="<?php echo $_SESSION["token"]?>"/>
+
 					<button type="submit" class="btn btn-success float-right" name ="submit" value="Login">Sign up</button>
 				</form>	
 			</div>	  

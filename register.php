@@ -1,44 +1,50 @@
 <?php
 include("dbConnect.php");
+if (hash_equals($_SESSION['token'], $_POST['token'])) {
+  if (isset($_POST["submit"])) {
 
-if (isset($_POST["submit"])) {
+    if (
+      empty($_POST['name']) ||
+      empty($_POST['password']) ||
+      empty($_POST['email'])
+    ) {
 
-  if (
-    empty($_POST['name']) ||
-    empty($_POST['password']) ||
-    empty($_POST['email'])
-  ) {
+      die('Please fill all required fields!');
+    }
 
-    die('Please fill all required fields!');
-  }
-
-  if (($_POST['password'] !== $_POST['confirm_password']) && ($_POST['email'] !== $_POST['confirm_email'])) {
-    die('Password and Confirm password should match!');
-  } else {
-    /* Name. */
-    $name = $_POST['name'];;
-
-    /* Password. */
-    $password = $_POST['password'];;
-
-    /* Email */
-    $email = $_POST['email'];
-
-    $role = "student";
-    /* Secure password hash. */
-    $hash = password_hash($password, PASSWORD_DEFAULT);
-
-    /* Insert query template. */
-    $query = "INSERT INTO `accounts`( `name`, `password`, `email`, `role`) VALUES (?, ?, ?, ?)";
-
-    /* Execute the query. */
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("ssss", $name, $hash, $email, $role);
-    if ($stmt->execute()) {
-      $stmt->close();
-      header("location:index.php");
+    if (($_POST['password'] !== $_POST['confirm_password']) && ($_POST['email'] !== $_POST['confirm_email'])) {
+      die('Password and Confirm password should match!');
     } else {
-      $con->error;
+      /* Name. */
+      $name = $_POST['name'];
+
+      /* Password. */
+      $password = $_POST['password'];
+
+      /* Email */
+      $email = $_POST['email'];
+
+      $role = "student";
+      /* Secure password hash. */
+      $hash = password_hash($password, PASSWORD_DEFAULT);
+
+      /* Insert query template. */
+      $query = "INSERT INTO `accounts`( `name`, `password`, `email`, `role`) VALUES (?, ?, ?, ?)";
+
+      /* Execute the query. */
+      $stmt = $con->prepare($query);
+      $stmt->bind_param("ssss", $name, $hash, $email, $role);
+      if ($stmt->execute()) {
+        $stmt->close();
+        header("location:index.php");
+      } else {
+        $con->error;
+      }
     }
   }
+} else {
+  echo "Token not valid!!";
+  echo $_SESSION['token'] . "<br>";
+  echo $_POST['token'];
+
 }

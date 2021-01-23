@@ -3,7 +3,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if (!isset($_SESSION['id'], $_SESSION['role']) && $_SESSION['role'] == 'admin') {
+if (!isset($_SESSION['id'], $_SESSION['role']) || strcmp($_SESSION['role'], 'admin')) {
     header('location:index.php');
     exit;
 }

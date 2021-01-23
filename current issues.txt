@@ -1,3 +1,0 @@
-admin.php ==> pressing cancel on delete confirm dialog still deletes the entry.
-exam_date can be higher than today..
-exam_limit cannot be more than 3 hour..
